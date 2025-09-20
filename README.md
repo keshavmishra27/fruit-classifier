@@ -31,10 +31,10 @@ archive (1)/dataset-4/
 </code></pre>
 
 #Installation
-\\\
+<pre><code>
 python 
 pip install tensorflow pandas numpy matplotlib
-\\\
+</code></pre>
 
 #Training the Model
 \\\
