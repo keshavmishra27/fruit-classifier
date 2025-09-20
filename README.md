@@ -1,121 +1,109 @@
-# fruit-classifier
+#Fruit Classification Using MobileNet
+A deep learning project for multi-class fruit image classification using Keras and MobileNet. This solution employs fine-tuning, image augmentation, and custom prediction scripts to achieve robust results with small and medium-sized datasets.
 
-dataset used:https://www.kaggle.com/datasets/jeckyhindrawan/fruit-classification
+#Features
+Image preprocessing and augmentation (rotation, shift, zoom, flip)
 
-Here is a README file for your fruit classification project using MobileNetV2 and Keras. This template is based on standard deep learning project structures and tailored to your code and dataset setup.
+MobileNet transfer learning with fine-tuning
 
-Fruit Classification Using MobileNetV2
-Overview
-This project builds and trains a deep learning model for classifying images of fruits using transfer learning with MobileNetV2 in TensorFlow/Keras. The model is capable of identifying 10 different fruit classes from image data, and provides prediction output for new/unlabeled images.
+Customizable hyperparameters (optimizer, epochs, dropout, dense units)
 
-Dataset
-Train/Test Directories:
-Images are structured into train, test, and predict folders.
+Standalone scripts for training and batch predictions on new images
 
-Each class has its own subdirectory in train and test (e.g., Apple, Banana, etc.).
+Saves best weights and visualization plots for monitoring performance
 
-For prediction, images are placed in a subdirectory inside predict (e.g., predict/testing/).
+#Dataset Structure
+\\\
+archive (1)/dataset-4/
+├── train/
+│   ├── Apple/
+│   ├── Avocado/
+│   └── ... (other fruit classes)
+├── test/
+│   ├── Apple/
+│   ├── Avocado/
+│   └── ... (other fruit classes)
+└── predict/
+    └── testing/
+        ├── 1.jpeg
+        ├── 2.jpeg
+        └── ...
+\\\
 
-Classes:
-
-Apple
-
-Avocado
-
-Banana
-
-Cherry
-
-Kiwi
-
-Mango
-
-Orange
-
-Pineapple
-
-Strawberries
-
-Watermelon
-
-Model Architecture
-Base Model: MobileNetV2 (pre-trained on ImageNet)
-
-Custom Layers:
-
-GlobalAveragePooling2D
-
-Dense (128 units, ReLU)
-
-Dropout (0.3)
-
-Output Dense (10 units, Softmax)
-
-Optimizer: RMSprop with fine-tuned learning rate
-
-Loss Function: Sparse Categorical Crossentropy
-
-Callbacks:
-
-EarlyStopping
-
-ModelCheckpoint
-
-ReduceLROnPlateau
-
-Setup & Usage
-1. Install Dependencies
-bash
+#Installation
+\\\
+python 
 pip install tensorflow pandas numpy matplotlib
-2. Prepare Dataset
-Place training images in archive (1)/dataset-4/train/[class_name]/
+\\\
 
-Place testing images in archive (1)/dataset-4/test/[class_name]/
-
-Place prediction images in a subfolder:
-archive (1)/dataset-4/predict/testing/
-
-3. Train Model
-Run the Python script (e.g., fruit_classifier.py).
-The script trains the model and saves output graphs for loss and accuracy.
-
-4. Predict New Images
-Place images for prediction in archive (1)/dataset-4/predict/testing/
-
-The script loads these and prints predicted class labels for each image.
-
-5. Save/Load Model
-The trained model is saved in HDF5 or native Keras format:
-
+#Training the Model
+\\\
 python
-final_model.save('archive (1)/dataset-4/fruit_tf_model.h5')
-# For native Keras format:
-# final_model.save('archive (1)/dataset-4/fruit_tf_model.keras')
-Output
-Training/Validation Accuracy and Loss plots
+python fruit_classifier.train.py
+\\\
+Trains a MobileNet-based model for fruit classification.
 
-Predicted fruit class for each image in predict/testing/
+Saves the trained model as archive (1)/dataset-4/fruit_tf_model.h5.
 
-Model checkpoint file (fruit_tf_model.h5)
+Produces and shows training/validation loss and accuracy plots.
 
-Sample Prediction Code
+#Hyperparameters (can be changed in script):
+
+Learning rate
+
+Number of epochs
+
+Dropout rate
+
+Dense layer units
+
+Number of unfrozen layers for fine-tuning
+
+#Class Alignment
+fruit_arr = [k for k, v in sorted(train_gen.class_indices.items(), key=lambda item: item[1])]
+
+#Testing and Inference
+\\\ python 
+python test.py
+\\\
+Loads the trained model and prints fruit predictions for images in predict/testing/1.jpeg through predict/testing/30.jpeg
+
+Uses predict_fruit(img_path) to process and predict each input image
+
+#Example output:
+\\\
 python
-test_gen = test_datagen.flow_from_directory(
-    test_dir,
-    target_size=(224, 224),
-    batch_size=1,
-    class_mode=None,
-    shuffle=False
-)
-preds = final_model.predict(test_gen, steps=len(test_gen))
-predicted_indices = np.argmax(preds, axis=1)
-predicted_labels = [fruit_arr[idx] for idx in predicted_indices]
-for fname, label in zip(test_gen.filenames, predicted_labels):
-    print(f"{fname}: {label}")
-Applications
-Automated sorting for agriculture/food tech
+Predicted fruit: Apple
+Predicted fruit: Mango
+\\\
 
-Grocery store fruit identification
+#test.py highlights:
+Loads class order dynamically from training
 
-Dietary tracking apps
+Accepts image path, resizes and normalizes to fit model
+
+Predicts and prints class label for each fil
+
+#Visualization
+After training, check your logs/plots for .plot() output showing:
+
+Training vs. validation loss
+
+Training vs. validation accuracy
+
+#Model Saving
+Model is saved as HDF5 (fruit_tf_model.h5).
+Tip: Keras recommends:
+
+\\\
+pythpn
+final_model.save('fruit_tf_model.keras')
+\\\
+
+#Acknowledgements
+[Keras MobileNet Documentation]:https://keras.io/api/applications/mobilenet/
+[Fruit Classification Datasets]:https://www.kaggle.com/datasets/jeckyhindrawan/fruit-classification
+
+
+
 
