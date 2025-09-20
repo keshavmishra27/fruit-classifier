@@ -13,7 +13,7 @@ Standalone scripts for training and batch predictions on new images
 Saves best weights and visualization plots for monitoring performance
 
 #Dataset Structure
-\\\
+<pre><code>
 archive (1)/dataset-4/
 ├── train/
 │   ├── Apple/
@@ -28,7 +28,7 @@ archive (1)/dataset-4/
         ├── 1.jpeg
         ├── 2.jpeg
         └── ...
-\\\
+</code></pre>
 
 #Installation
 \\\
